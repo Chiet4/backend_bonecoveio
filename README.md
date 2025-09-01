@@ -39,121 +39,152 @@ backend_bonecoveio/
 ## O que vai em cada pasta
 - `prisma/`
   - Contém o schema.prisma (modelos do banco) e as migrações automáticas.
-  - Onde definimos entidades como User, Product, Order.
+  - Onde definimos entidades como `User`, `Product`, `Order`.
 
 - `config/`
   - Instâncias e configurações globais.
-  - Exemplo: prisma.js com um único PrismaClient.
+  - Exemplo: `prisma.js` com um único `PrismaClient`.
 
 - `middlewares/`
-  - Funções que rodam entre a requisição e o controller.
-  - Exemplos: autenticação JWT, verificação de role admin, tratamento de erros.
+  - Funções que rodam entre a requisição e o `controller`.
+  - Exemplos: autenticação JWT, verificação de `role admin`, tratamento de erros.
 
 - `routes/`
-  - Arquivos que definem os endpoints (GET /produtos, POST /auth/login).
-  - Só mapeiam caminhos para funções do controller.
+  - Arquivos que definem os endpoints (GET `/produtos`, POST `/auth/login`).
+  - Só mapeiam caminhos para funções do `controller`.
 
 - `controllers/`
-  - Camada que lida com HTTP: recebe req, chama o service e devolve res.json(...).
-  - Exemplo: productController.listarProdutos(req, res).
+  - Camada que lida com HTTP: recebe `req`, chama o `service` e devolve `res.json(...)`.
+  - Exemplo: `productController.listarProdutos(req, res)`.
 
 - `services/`
   - Onde fica a regra de negócio e o acesso ao banco via Prisma.
-  - Exemplo: productService.listarProdutos(filtros).
+  - Exemplo: `productService.listarProdutos(filtros)`.
 
 - `domain/` - *decidir ainda se vamos usar* 
   - Define contratos e validações (schemas do Zod, DTOs).
-  - Exemplo: createProductSchema, updateUserSchema.
+  - Exemplo: `createProductSchema`, `updateUserSchema`.
 
 - `utils/`
   - Funções auxiliares independentes.
-  - Exemplo: jwt.sign/verify, hashPassword, paginate().
+  - Exemplo: `jwt.sign/verify`, `generateToken`.
 
 ## Regras de Ouro 🚨
 
-1 - Rota curta, Controller fino, Service gordo
-- Rota só chama controller.
-- Controller só traduz HTTP.
-- Service resolve a regra de negócio.
+1 - Rota curta, `Controller` fino, `Service` gordo
+- Rota só chama `controller`.
+- `Controller` só traduz HTTP.
+- `Service` resolve a regra de negócio.
 
-2 - Nada de Prisma direto no Controller
-- Controller → chama Service → Service usa Prisma.
+2 - Nada de Prisma direto no `Controller`
+- `Controller` → chama `Service` → `Service` usa Prisma.
 - Facilita testes e mantém responsabilidades separadas.
 
 3 - (Decidir ainda se vamos usar) Validação em `domain/`
-- Use zod para validar req.body/params/query.
-- Controller só chama o schema e repassa dados já validados.
+- Use zod para validar `req.body/params/query`.
+- `Controller` só chama o schema e repassa dados já validados.
 
 4 - Erros padronizados
-- Sempre lançar erros com { status, message }.
-- Middleware error.js centraliza resposta ao cliente.
+- Sempre lançar erros com `{ status, message }`.
+- `Middleware` `error.js` centraliza resposta ao cliente.
 
 5 - Consistência nos nomes
-- Rotas em português (/produtos, /pedidos).
-- Campos do banco em inglês (productId, createdAt).
+- Rotas em português (`/produtos`, `/pedidos`).
+- Campos do banco em inglês (`productId, createdAt`).
 - Mapeamento feito no domain/ quando necessário.
 
 ## Fluxo de uma Requisição
 
-1 - Rota: GET /produtos é definida em routes/produtos.routes.js.
+1 - Rota: GET `/produtos` é definida em `routes/produtos.routes.js`.
 
-2 - Controller: recebe req.query, chama productService.listar(...).
+2 - `Controller`: recebe `req.query`, chama `productService.listar(...)`.
 
-3 - Service: aplica regras de negócio, consulta Prisma (prisma.product.findMany).
+3 - `Service`: aplica regras de negócio, consulta Prisma (`prisma.product.findMany`).
 
-4 - Domain: valida entrada e saída com schemas (Como não foi decidido, validado direto no código).
+4 - `Domain`: valida entrada e saída com schemas (Como não foi decidido, validado direto no código).
 
-5 - Controller: envia res.json(...).
+5 - `Controller`: envia `res.json(...)`.
 
-6 - Middleware de erro (se algo falhar): devolve resposta padrão.
+6 - `Middleware` de erro (se algo falhar): devolve resposta padrão.
 
 
 ## Rotas
 
 - Público/Usuário
-  - POST /auth/register – cria usuário
-  - POST /auth/login – retorna JWT
-  - GET /auth/me – retorna usuário do token (front)
-  - POST /auth/refresh - refresh dos tokens.
+  - `POST /auth/register` – cria usuário
+  - `POST  /auth/login` – retorna JWT
+  - `GET /auth/me` – retorna usuário do token (front)
+  - `POST /auth/refresh` - refresh dos tokens.
 
 - Produtos
-  - GET /produtos – lista com filtros 
-  - GET /produtos/:id – detalhe
+  - `GET /produtos` – lista com filtros 
+  - `GET /produtos/:id` – detalhe
 
 - Favorito (por usuário):
-  - POST /produtos/:id/favoritos – adiciona/remove dos favoritos do usuário
-  - GET /me/favoritos – lista favoritos do usuário
+  - `POST /produtos/:id/favoritos` – adiciona/remove dos favoritos do usuário
+  - `GET /me/favoritos` – lista favoritos do usuário
 
 - Carrinho (do usuário logado)
-  - GET /carrinho – ver itens do carrinho
-  - POST /carrinho/items – { produtoId, quantidade }
-  - PATCH /carrinho/items/:itemId – { quantidade }
-  - DELETE /carrinho/items/:itemId
+  - `GET /carrinho` – ver itens do carrinho
+  - `POST /carrinho/items` – { produtoId, quantidade }
+  - `PATCH /carrinho/items/:itemId` – { quantidade }
+  - `DELETE /carrinho/items/:itemId`
 
 - Pedidos (do usuário logado)
-  - POST /pedidos – cria pedido a partir do carrinho (checkout)
-  - GET /pedidos – lista meus pedidos
-  - GET /pedidos/:id – detalhe do meu pedido
+  - `POST /pedidos` – cria pedido a partir do carrinho (checkout)
+  - `GET /pedidos` – lista meus pedidos
+  - `GET /pedidos/:id` – detalhe do meu pedido
 
 - Admin
     - Usuários
-      - GET /admin/usuarios – listar com usuários
-      - PATCH /admin/usuarios/:id/role – { role: "ADMIN"|"USER" }
-      - DELETE /admin/usuarios/:id
+      - `GET /admin/usuarios` – listar com usuários
+      - `PATCH /admin/usuarios/:id/role` – { `role: "ADMIN"|"USER"` }
+      - `DELETE /admin/usuarios/:id` - deleta usuário
 
     - Produtos
-      - GET /admin/produtos – visão admin (pode reutilizar a pública com campos diferentes)
-      - POST /admin/produtos – criar
-      - PATCH /admin/produtos/:id – editar
-      - DELETE/admin/produtos/:id – remover
+      - `GET /admin/produtos` – visão admin (pode reutilizar a pública com campos diferentes)
+      - `POST /admin/produtos` – criar
+      - `PATCH /admin/produtos/:id` – editar
+      - `DELETE/admin/produtos/:id` – remover
 
     - Pedidos
-      - GET /admin/pedidos – todos os pedidos 
-      - PATCH /admin/pedidos/:id/status – { status: "pendente" | "Enviado" |"pago"|"cancelado" }
+      - `GET /admin/pedidos` – todos os pedidos 
+      - `PATCH /admin/pedidos/:id/status` – { `status: "pendente" | "Enviado" |"pago"|"cancelado"` }
 
 
 ## Padrão de commits
 - Utilizamos o padrão: [iuricode/padroes-de-commits](https://github.com/iuricode/padroes-de-commits)
+
+## Comandos inciais 
+
+```bash 
+# 1) Clonar e entrar no projeto
+git clone <url-do-repo>
+cd backend_bonecoveio/api
+
+# 2) Instalar dependências
+npm install
+
+# 3) Configurar variáveis de ambiente
+touch .env  
+# abra o arquivo e ajuste a DATABASE_URL com seu Postgres
+
+# 4) Inicializar Prisma (só na 1ª vez)
+npm run prisma:init    # cria arquivos base do Prisma
+
+# 5) Gerar client do Prisma
+npm run db:gen
+
+# 6) Criar/rodar migrações no banco (dev)
+npm run db:migrate
+
+# (opcional) Abrir Prisma Studio (GUI para ver os dados)
+npm run prisma:studio
+
+# 7) Subir o servidor em modo desenvolvimento (com nodemon)
+npm run dev
+
+```
 
 
 <div>
