@@ -13,27 +13,95 @@ API em Node.js + Express + PostgreSQL + Prisma.
 ```
 backend_bonecoveio/
   ├─ README.md
-  ├─ api/                 
-  │  ├─ .env.example
-  │  ├─ package.json
-  │  ├─ prisma/
-  │  │  ├─ schema.prisma
-  │  │  └─ migrations/
-  │  └─ src/
-  │     ├─ app.ts         # instancia do express + middlewares
-  │     ├─ server.ts      # sobe servidor
-  │     ├─ config/
-  │     │  └─ prisma.ts   # PrismaClient 
-  │     ├─ middlewares/   # Funções "pipeline" entre as requisições e respostas
-  │     │  └─ auth.js     # valida JWT
-  │     ├─ routes/
-  │     │  ├─ public/     # /auth, /produtos, /carrinho, /pedidos
-  │     │  └─ admin/      # /admin/usuarios, /admin/produtos, /admin/pedidos
-  │     ├─ controllers/   # req/res mínimo
-  │     ├─ services/      # regra de negócio
-  │     ├─ domain/        # DTOs/validações de entrada e saída 
-  │     └─ utils/         # jwt, password, pagination
+  └─ api/
+      ├─ .env                   # Variáveis de ambiente (conexão com banco, JWT, porta etc.)
+      ├─ package.json           # Dependências e scripts npm
+      ├─ prisma/                # Schema e migrações do banco (Prisma)
+      │  ├─ schema.prisma
+      │  └─ migrations/
+      └─ src/                   # Código-fonte da API
+        ├─ app.js               # Configuração base do Express (middlewares, rotas, erros)
+        ├─ server.js            # Inicialização do servidor (app.listen)
+        ├─ config/              # Configurações e instâncias únicas (ex.: PrismaClient)
+        ├─ middlewares/         # Funções que interceptam requisições (auth, errors, etc.)
+        ├─ routes/              # Definição dos endpoints (público e admin)
+        ├─ controllers/         # Traduzem req/res e chamam os services
+        ├─ services/            # Regras de negócio e acesso ao banco (via Prisma)
+        ├─ domain/              # DTOs e validações de entrada/saída (ex.: zod schemas??)
+        └─ utils/               # Funções utilitárias (JWT, hash de senha, paginação, etc.)
+
 ```
+
+## O que vai em cada pasta
+- `prisma/`
+  - Contém o schema.prisma (modelos do banco) e as migrações automáticas.
+  - Onde definimos entidades como User, Product, Order.
+
+- `config/`
+  - Instâncias e configurações globais.
+  - Exemplo: prisma.js com um único PrismaClient.
+
+- `middlewares/`
+  - Funções que rodam entre a requisição e o controller.
+  - Exemplos: autenticação JWT, verificação de role admin, tratamento de erros.
+
+- `routes/`
+  - Arquivos que definem os endpoints (GET /produtos, POST /auth/login).
+  - Só mapeiam caminhos para funções do controller.
+
+- `controllers/`
+  - Camada que lida com HTTP: recebe req, chama o service e devolve res.json(...).
+  - Exemplo: productController.listarProdutos(req, res).
+
+- `services/`
+  - Onde fica a regra de negócio e o acesso ao banco via Prisma.
+  - Exemplo: productService.listarProdutos(filtros).
+
+- `domain/` - *decidir ainda se vamos usar* 
+  - Define contratos e validações (schemas do Zod, DTOs).
+  - Exemplo: createProductSchema, updateUserSchema.
+
+- `utils/`
+  - Funções auxiliares independentes.
+  - Exemplo: jwt.sign/verify, hashPassword, paginate().
+
+## Regras de Ouro 🚨
+
+1 - Rota curta, Controller fino, Service gordo
+- Rota só chama controller.
+- Controller só traduz HTTP.
+- Service resolve a regra de negócio.
+
+2 - Nada de Prisma direto no Controller
+- Controller → chama Service → Service usa Prisma.
+- Facilita testes e mantém responsabilidades separadas.
+
+3 - (Decidir ainda se vamos usar) Validação em `domain/`
+- Use zod para validar req.body/params/query.
+- Controller só chama o schema e repassa dados já validados.
+
+4 - Erros padronizados
+- Sempre lançar erros com { status, message }.
+- Middleware error.js centraliza resposta ao cliente.
+
+5 - Consistência nos nomes
+- Rotas em português (/produtos, /pedidos).
+- Campos do banco em inglês (productId, createdAt).
+- Mapeamento feito no domain/ quando necessário.
+
+## Fluxo de uma Requisição
+
+1 - Rota: GET /produtos é definida em routes/produtos.routes.js.
+
+2 - Controller: recebe req.query, chama productService.listar(...).
+
+3 - Service: aplica regras de negócio, consulta Prisma (prisma.product.findMany).
+
+4 - Domain: valida entrada e saída com schemas (Como não foi decidido, validado direto no código).
+
+5 - Controller: envia res.json(...).
+
+6 - Middleware de erro (se algo falhar): devolve resposta padrão.
 
 
 ### ROTAS
