@@ -1,0 +1,137 @@
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -----------------------------------------------------------
+// USUÁRIO
+// -----------------------------------------------------------
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(USER) // USER | ADMIN
+
+  // Relacionamentos
+  favorites    Favorite[]
+  cart         Cart?
+  orders       Order[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// -----------------------------------------------------------
+// PRODUTO
+// -----------------------------------------------------------
+model Product {
+  id            String   @id @default(cuid())
+  imageSrc      String
+  title         String
+  description   String
+  rating        Int      @default(0)    // 0..5 (validar na aplicação)
+  isNew         Boolean  @default(false)
+  originalPrice Float
+  price         Float
+  discount      Float?                 // % (0..100) — validar na aplicação
+
+  // Relacionamentos
+  favorites     Favorite[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// -----------------------------------------------------------
+// FAVORITOS (por usuário)
+// -----------------------------------------------------------
+model Favorite {
+  id        String  @id @default(cuid())
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId]) // um favorito por (usuário, produto)
+}
+
+// -----------------------------------------------------------
+// CARRINHO
+// -----------------------------------------------------------
+model Cart {
+  id        String     @id @default(cuid())
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String     @unique // um carrinho por usuário
+  items     CartItem[]
+
+  updatedAt DateTime   @updatedAt
+  createdAt DateTime   @default(now())
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productId String
+  quantity  Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([cartId, productId]) // evita item duplicado do mesmo produto
+}
+
+// -----------------------------------------------------------
+// PEDIDO
+// -----------------------------------------------------------
+model Order {
+  id        String      @id @default(cuid())
+  user      User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
+  status    OrderStatus @default(pendente)
+  total     Float
+
+  items     OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  pendente
+  pago
+  enviado
+  cancelado
+}
+
+model OrderItem {
+  id             String   @id @default(cuid())
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId        String
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productId      String
+
+  // “Snapshot” de dados do produto no momento da compra:
+  titleSnapshot  String
+  priceSnapshot  Float
+  imageSnapshot  String
+
+  quantity       Int
+
+  createdAt      DateTime @default(now())
+}
