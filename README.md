@@ -1,6 +1,6 @@
 # E-commerce Boneco Veio (Admin + Usuário) — Back-end
 
-API em Node.js + Express + PostgreSQL + Prisma.
+Projeto Backend API desenvolvido em Node.js + Express + PostgreSQL + Prisma.
 
 ## Sumário
 - [Arquitetura de Pastas](#arquitetura-de-pastas)
@@ -109,7 +109,7 @@ backend_bonecoveio/
 
 
 ## Rotas
-
+```
 - Público/Usuário
   - `POST /auth/register` – cria usuário
   - `POST  /auth/login` – retorna JWT
@@ -150,7 +150,7 @@ backend_bonecoveio/
     - Pedidos
       - `GET /admin/pedidos` – todos os pedidos 
       - `PATCH /admin/pedidos/:id/status` – { `status: "pendente" | "Enviado" |"pago"|"cancelado"` }
-
+```
 
 ## Padrão de commits
 - Utilizamos o padrão: [iuricode/padroes-de-commits](https://github.com/iuricode/padroes-de-commits)
@@ -185,7 +185,6 @@ npm run prisma:studio
 npm run dev
 
 ```
-
 
 <div>
   <h2>🔷 Autores:</h2>
