@@ -1,10 +1,10 @@
 import { Router } from 'express';
+import * as produtoController from '../../controllers/produtos.controller.js';
+
 const router = Router();
 
-// GET /produtos – lista com filtros ?q=&isNew=&minPrice=&maxPrice=&page=&perPage=
-router.get('/', (req, res) => {
-  return res.status(501).json({ message: 'Não implementado (listar produtos)' });
-});
+// GET /produtos – lista com filtros
+router.get('/', produtoController.listar);
 
 // GET /produtos/:id – detalhe
 router.get('/:id', (req, res) => {
