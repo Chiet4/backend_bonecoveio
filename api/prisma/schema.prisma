@@ -46,6 +46,9 @@ model Product {
   price         Float
   discount      Float?                 // % (0..100) — validar na aplicação
 
+  // nova adição 
+  stock        Int      @default(0) // não pode ser negativo
+
   // Relacionamentos
   favorites     Favorite[]
   cartItems     CartItem[]
