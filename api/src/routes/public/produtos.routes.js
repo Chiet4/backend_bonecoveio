@@ -7,9 +7,7 @@ const router = Router();
 router.get('/', produtoController.listar);
 
 // GET /produtos/:id – detalhe
-router.get('/:id', (req, res) => {
-  return res.status(501).json({ message: 'Não implementado (detalhar produto)' });
-});
+router.get('/:id', produtoController.getById);
 
 // POST /produtos/:id/favoritos – toggle favorito para o usuário logado
 router.post('/:id/favoritos', (req, res) => {

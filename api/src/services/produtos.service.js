@@ -34,3 +34,18 @@ const { skip, take } = paginate({ page, perPage });
 
   return { items, total, page, perPage };
 }
+
+/**
+ * Busca um produto pelo seu ID.
+ * Lança um erro se o produto não for encontrado.
+ * @param {string} productId O ID do produto a ser buscado.
+ * @returns {Promise<Object>} O objeto do produto encontrado.
+ */
+export const findById = async (productId) => {
+  const product = await prisma.product.findUniqueOrThrow({
+    where: {
+      id: productId,
+    },
+  });
+  return product;
+};
