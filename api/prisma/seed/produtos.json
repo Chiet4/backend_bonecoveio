@@ -8,6 +8,7 @@
     "rating": 5,
     "isFavorite": true,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 210.0
   },
   {
@@ -19,6 +20,7 @@
     "rating": 5,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 189.9
   },
   {
@@ -30,6 +32,7 @@
     "rating": 4,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 200.0
   },
   {
@@ -41,6 +44,7 @@
     "rating": 4,
     "isFavorite": true,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 223.4
   },
   {
@@ -52,6 +56,7 @@
     "rating": 5,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 189.9
   },
   {
@@ -63,6 +68,7 @@
     "rating": 4,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 237.4
   },
   {
@@ -74,6 +80,7 @@
     "rating": 3,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 189.9
   },
   {
@@ -85,6 +92,7 @@
     "rating": 5,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 189.9
   },
   {
@@ -96,6 +104,7 @@
     "rating": 5,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 189.9
   },
   {
@@ -107,6 +116,7 @@
     "rating": 4,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 271.3
   },
   {
@@ -119,6 +129,7 @@
     "rating": 5,
     "isFavorite": false,
     "price": 189.9,
+    "stock": 4,
     "originalPrice": 189.9
   }
 ]

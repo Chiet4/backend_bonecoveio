@@ -39,6 +39,7 @@ function normalizarProduto(p) {
   let rating = numeroOuNull(p.rating);
   rating = clamp(rating ?? 0, 0, 5);
 
+  let stock = numeroOuNull(p.stock);
   // Preços
   let originalPrice = numeroOuNull(p.originalPrice);
   let price = numeroOuNull(p.price);
@@ -63,6 +64,7 @@ function normalizarProduto(p) {
     // isFavorite: Boolean(p.isFavorite),
     discount: discount, // null ou número
     rating: rating,     // 0..5
+    stock: stock, 
     originalPrice: originalPrice ?? 0,
     price: price ?? 0
   };
