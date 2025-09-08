@@ -49,3 +49,39 @@ export const findById = async (productId) => {
   });
   return product;
 };
+/**
+ * Adiciona ou remove um produto dos favoritos de um usuário.
+ * @param {string} userId O ID do usuário.
+ * @param {string} productId O ID do produto.
+ * @returns {Promise<{favorited: boolean}>} Retorna true se o item foi favoritado, false se foi removido.
+ */
+export const toggleFavorite = async (userId, productId) => {
+  // Procura por um favorito que combine o ID do usuário e do produto
+  const existingFavorite = await prisma.favorite.findUnique({
+    where: {
+      userId_productId: { // Usa o índice único definido no schema
+        userId,
+        productId,
+      },
+    },
+  });
+
+  if (existingFavorite) {
+    // Se já existe, remove
+    await prisma.favorite.delete({
+      where: {
+        id: existingFavorite.id,
+      },
+    });
+    return { favorited: false }; // Retorna que foi desfavoritado
+  } else {
+    // Se não existe, cria
+    await prisma.favorite.create({
+      data: {
+        userId,
+        productId,
+      },
+    });
+    return { favorited: true }; // Retorna que foi favoritado
+  }
+};
