@@ -10,8 +10,6 @@ router.get('/', produtoController.listar);
 router.get('/:id', produtoController.getById);
 
 // POST /produtos/:id/favoritos – toggle favorito para o usuário logado
-router.post('/:id/favoritos', (req, res) => {
-  return res.status(501).json({ message: 'Não implementado (toggle favorito do produto)' });
-});
+router.post('/:id/favoritos', produtoController.favoritarProduto);
 
 export default router;
