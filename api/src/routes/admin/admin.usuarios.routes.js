@@ -1,10 +1,11 @@
 import { Router } from 'express';
+// Importando um novo controlador aqui no topo
+import * as adminUsuariosController from '../../controllers/admin.usuarios.controller.js';
+
 const router = Router();
 
-// GET /admin/usuarios – listar com filtros ?q=&page=&perPage=
-router.get('/', (req, res) => {
-  return res.status(501).json({ message: 'Não implementado (admin: listar usuários)' });
-});
+// Substituição da função antiga desta rota pela chamada ao seu controlador
+router.get('/', adminUsuariosController.listar);
 
 // PATCH /admin/usuarios/:id/role – { role: "ADMIN"|"USER" }
 router.patch('/:id/role', (req, res) => {
