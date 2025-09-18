@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as produtoController from '../../controllers/produtos.controller.js';
 
 const router = Router();
-
+  
 // GET /produtos – lista com filtros
 router.get('/', produtoController.listar);
 
