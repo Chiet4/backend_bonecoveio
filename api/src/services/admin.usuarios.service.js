@@ -26,3 +26,24 @@ export const listarUsuarios = async ({ page, perPage }) => {
 
   return { items: users, total, page, perPage };
 };
+/**
+ * Busca um usuário pelo seu ID para a área administrativa.
+ * Lança um erro se o usuário não for encontrado.
+ * @param {string} userId O ID do usuário a ser buscado.
+ * @returns {Promise<Object>} O objeto do usuário encontrado.
+ */
+export const findUserById = async (userId) => {
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+    select: { 
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+    },
+  });
+  return user;
+};

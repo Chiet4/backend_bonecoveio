@@ -1,11 +1,13 @@
 import { Router } from 'express';
-// Importando um novo controlador aqui no topo
 import * as adminUsuariosController from '../../controllers/admin.usuarios.controller.js';
 
 const router = Router();
 
-// Substituição da função antiga desta rota pela chamada ao seu controlador
+// GET /admin/usuarios – listar com filtros
 router.get('/', adminUsuariosController.listar);
+
+// GET /admin/usuarios/:id – detalhe de um usuário
+router.get('/:id', adminUsuariosController.getById);
 
 // PATCH /admin/usuarios/:id/role – { role: "ADMIN"|"USER" }
 router.patch('/:id/role', (req, res) => {
