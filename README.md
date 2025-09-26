@@ -45,9 +45,9 @@ backend_bonecoveio/
   - Instâncias e configurações globais.
   - Exemplo: `prisma.js` com um único `PrismaClient`.
 
-- `middlewares/`
+<!-- - `middlewares/`
   - Funções que rodam entre a requisição e o `controller`.
-  - Exemplos: autenticação JWT, verificação de `role admin`, tratamento de erros.
+  - Exemplos: autenticação JWT, verificação de `role admin`, tratamento de erros. -->
 
 - `routes/`
   - Arquivos que definem os endpoints (GET `/produtos`, POST `/auth/login`).
@@ -67,7 +67,7 @@ backend_bonecoveio/
 
 - `utils/`
   - Funções auxiliares independentes.
-  - Exemplo: `jwt.sign/verify`, `generateToken`.
+  <!-- - Exemplo: `jwt.sign/verify`, `generateToken`. -->
 
 ## Regras de Ouro 🚨
 
@@ -109,12 +109,12 @@ backend_bonecoveio/
 
 
 ## Rotas
-```
-- Público/Usuário
+
+<!-- - Público/Usuário
   - `POST /auth/register` – cria usuário
   - `POST  /auth/login` – retorna JWT
   - `GET /auth/me` – retorna usuário do token (front)
-  - `POST /auth/refresh` - refresh dos tokens.
+  - `POST /auth/refresh` - refresh dos tokens. -->
 
 - Produtos
   - `GET /produtos` – lista com filtros 
@@ -150,7 +150,7 @@ backend_bonecoveio/
     - Pedidos
       - `GET /admin/pedidos` – todos os pedidos 
       - `PATCH /admin/pedidos/:id/status` – { `status: "pendente" | "Enviado" |"pago"|"cancelado"` }
-```
+
 
 ## Padrão de commits
 - Utilizamos o padrão: [iuricode/padroes-de-commits](https://github.com/iuricode/padroes-de-commits)
