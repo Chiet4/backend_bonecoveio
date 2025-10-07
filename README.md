@@ -1,6 +1,6 @@
 # E-commerce Boneco Veio (Admin + Usuário) — Back-end
 
-API em Node.js + Express + PostgreSQL + Prisma.
+Projeto Backend API desenvolvido em Node.js + Express + PostgreSQL + Prisma.
 
 ## Sumário
 - [Arquitetura de Pastas](#arquitetura-de-pastas)
@@ -45,9 +45,9 @@ backend_bonecoveio/
   - Instâncias e configurações globais.
   - Exemplo: `prisma.js` com um único `PrismaClient`.
 
-- `middlewares/`
+<!-- - `middlewares/`
   - Funções que rodam entre a requisição e o `controller`.
-  - Exemplos: autenticação JWT, verificação de `role admin`, tratamento de erros.
+  - Exemplos: autenticação JWT, verificação de `role admin`, tratamento de erros. -->
 
 - `routes/`
   - Arquivos que definem os endpoints (GET `/produtos`, POST `/auth/login`).
@@ -67,7 +67,7 @@ backend_bonecoveio/
 
 - `utils/`
   - Funções auxiliares independentes.
-  - Exemplo: `jwt.sign/verify`, `generateToken`.
+  <!-- - Exemplo: `jwt.sign/verify`, `generateToken`. -->
 
 ## Regras de Ouro 🚨
 
@@ -110,11 +110,11 @@ backend_bonecoveio/
 
 ## Rotas
 
-- Público/Usuário
+<!-- - Público/Usuário
   - `POST /auth/register` – cria usuário
   - `POST  /auth/login` – retorna JWT
   - `GET /auth/me` – retorna usuário do token (front)
-  - `POST /auth/refresh` - refresh dos tokens.
+  - `POST /auth/refresh` - refresh dos tokens. -->
 
 - Produtos
   - `GET /produtos` – lista com filtros 
@@ -123,12 +123,12 @@ backend_bonecoveio/
 - Favorito (por usuário):
   - `POST /produtos/:id/favoritos` – adiciona/remove dos favoritos do usuário
   - `GET /me/favoritos` – lista favoritos do usuário
-
+<!-- 
 - Carrinho (do usuário logado)
   - `GET /carrinho` – ver itens do carrinho
   - `POST /carrinho/items` – { produtoId, quantidade }
   - `PATCH /carrinho/items/:itemId` – { quantidade }
-  - `DELETE /carrinho/items/:itemId`
+  - `DELETE /carrinho/items/:itemId` -->
 
 - Pedidos (do usuário logado)
   - `POST /pedidos` – cria pedido a partir do carrinho (checkout)
@@ -138,7 +138,7 @@ backend_bonecoveio/
 - Admin
     - Usuários
       - `GET /admin/usuarios` – listar com usuários
-      - `PATCH /admin/usuarios/:id/role` – { `role: "ADMIN"|"USER"` }
+      <!-- - `PATCH /admin/usuarios/:id/role` – { `role: "ADMIN"|"USER"` } -->
       - `DELETE /admin/usuarios/:id` - deleta usuário
 
     - Produtos
@@ -186,7 +186,6 @@ npm run dev
 
 ```
 
-
 <div>
   <h2>🔷 Autores:</h2>
     <div>
@@ -209,37 +208,11 @@ npm run dev
             </a>
           </td>
           <td align="center">
-              <a href="https://github.com/meliszalee">
-                <img src="https://avatars.githubusercontent.com/u/167802044?v=4" alt="Melissa Lee"
-                width="100px"/>
-                <br />
-                <sub><b>Melissa Lee</b></sub>
-              </a>
-          </td>
-          <td align="center">
               <a href="https://github.com/DaniCrisCastro">
                 <img src="https://avatars.githubusercontent.com/u/145491691?v=4" alt="Danielle Castro"
                 width="100px" />
                 <br />
                 <sub><b>Danielle Castro</b></sub>
-              </a>
-          </td>
-          </td>
-          <td align="center">
-              <a href="https://github.com/thaynaxt">
-                <img src="https://avatars.githubusercontent.com/u/125219765?v=4" alt="Thayná Albano"
-                width="100px" />
-                <br />
-                <sub><b>Thayná Albano</b></sub>
-              </a>
-          </td>
-        </tr>
-        <td align="center">
-              <a href="https://github.com/wullerbarros">
-                <img src="https://avatars.githubusercontent.com/u/105557727?v=4" alt="Wüller Barros"
-                width="100px" />
-                <br />
-                <sub><b>Wüller Barros</b></sub>
               </a>
           </td>
       </table>

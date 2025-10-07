@@ -1,24 +1,17 @@
 import { Router } from 'express';
+import * as produtoController from '../../controllers/produtos.controller.js';
 const router = Router();
 
 // GET /admin/produtos – visão admin
-router.get('/', (req, res) => {
-  return res.status(501).json({ message: 'Não implementado (admin: listar produtos)' });
-});
+router.get('/', produtoController.listar);
 
 // POST /admin/produtos – criar
-router.post('/', (req, res) => {
-  return res.status(501).json({ message: 'Não implementado (admin: criar produto)' });
-});
+router.post('/', produtoController.criar);
 
 // PATCH /admin/produtos/:id – editar
-router.patch('/:id', (req, res) => {
-  return res.status(501).json({ message: 'Não implementado (admin: editar produto)' });
-});
+router.patch('/:id', produtoController.editar);
 
 // DELETE /admin/produtos/:id – remover
-router.delete('/:id', (req, res) => {
-  return res.status(501).json({ message: 'Não implementado (admin: remover produto)' });
-});
+router.delete('/:id', produtoController.remover);
 
 export default router;
